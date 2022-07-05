@@ -1,0 +1,15 @@
+tanzu apps workload create spring-sensors-consumer-web \
+  --git-repo https://github.com/blankpge/spring-sensors-rabbit \
+  --git-branch main \
+  --type web \
+  --service-ref="rmq=services.apps.tanzu.vmware.com/v1alpha1:ResourceClaim:rmq-1" \
+  --namespace dev-tap
+
+tanzu apps workload create \
+  spring-sensors-producer \
+  --git-repo https://github.com/blankpge/spring-sensors-sensor \
+  --git-branch main \
+  --type web \
+  --service-ref="rmq=services.apps.tanzu.vmware.com/v1alpha1:ResourceClaim:rmq-1" \
+  --annotation=autoscaling.knative.dev/minScale="1" \
+  --namespace dev-tap
